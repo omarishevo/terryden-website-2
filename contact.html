@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | Terryden Agencies</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { brandBlue:'#1B3B6F', brandNavy:'#0A2647', brandGold:'#D4AF37' }}}}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 font-sans">
+<div id="navbar-slot"></div>
+<section class="pt-32 pb-16 bg-brandNavy text-white text-center">
+  <h1 class="text-4xl font-extrabold">Contact Us</h1>
+  <p class="text-brandGold mt-3">We'd love to hear from you</p>
+</section>
+
+<section class="section-pad max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12">
+  <div>
+    <h2 class="text-2xl font-bold text-brandNavy mb-6">Send Us a Message</h2>
+    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message sent! (demo — connect to a backend endpoint like /api/contact)');">
+      <input required placeholder="Full Name" class="w-full border rounded-lg px-4 py-3">
+      <input required type="email" placeholder="Email Address" class="w-full border rounded-lg px-4 py-3">
+      <input placeholder="Phone Number" class="w-full border rounded-lg px-4 py-3">
+      <input placeholder="Subject" class="w-full border rounded-lg px-4 py-3">
+      <textarea required placeholder="Your Message" rows="5" class="w-full border rounded-lg px-4 py-3"></textarea>
+      <button class="bg-brandGold text-brandNavy font-bold px-8 py-3 rounded-lg hover:bg-yellow-600 transition">Send Message</button>
+    </form>
+  </div>
+  <div>
+    <div class="bg-white rounded-xl shadow p-8 mb-6 space-y-3">
+      <p><strong class="text-brandNavy">Head Office:</strong> DT Ports Sacco, 2nd Floor, Mwakilunge Road, Mombasa, Kenya</p>
+      <p><strong class="text-brandNavy">Phone:</strong> +254 738 372 262</p>
+      <p><strong class="text-brandNavy">Email:</strong> terrydenagencies@gmail.com</p>
+    </div>
+    <iframe
+      src="https://www.google.com/maps?q=Mwakilunge+Road+Mombasa+Kenya&output=embed"
+      class="w-full h-80 rounded-xl border-0 shadow" loading="lazy"></iframe>
+  </div>
+</section>
+<div id="footer-slot"></div>
+<script src="components.js"></script>
+</body>
+</html>

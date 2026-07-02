@@ -1,0 +1,11 @@
+.nav-link { color:#1B3B6F; font-weight:500; transition:.2s; }
+.nav-link:hover { color:#D4AF37; }
+.nav-link-mobile { color:#1B3B6F; font-weight:500; padding:.5rem 0; border-bottom:1px solid #eee; }
+.social-icon { width:36px; height:36px; border-radius:9999px; background:rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff; transition:.2s; }
+.social-icon:hover { background:#D4AF37; color:#1B3B6F; }
+.card-hover { transition:.3s; }
+.card-hover:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(27,59,111,.15); }
+.section-pad { padding-top:6rem; padding-bottom:6rem; }
+@keyframes bounce-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.animate-bounce-slow { animation:bounce-slow 2.5s infinite; }
+.hero-overlay { background:linear-gradient(120deg, rgba(10,38,71,.92), rgba(27,59,111,.75)); }

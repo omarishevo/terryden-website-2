@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal | Terryden Agencies</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { brandBlue:'#1B3B6F', brandNavy:'#0A2647', brandGold:'#D4AF37' }}}}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 font-sans">
+<div id="navbar-slot"></div>
+
+<section class="pt-32 pb-24 max-w-md mx-auto px-6">
+  <div id="loginView">
+    <h1 class="text-3xl font-extrabold text-brandNavy text-center mb-2">Client Portal</h1>
+    <p class="text-gray-500 text-center mb-8">Secure login to track projects, upload documents and view reports</p>
+    <form id="loginForm" class="bg-white p-8 rounded-xl shadow space-y-4">
+      <input id="loginEmail" required type="email" placeholder="Email Address" class="w-full border rounded-lg px-4 py-3">
+      <input id="loginPassword" required type="password" placeholder="Password" class="w-full border rounded-lg px-4 py-3">
+      <button class="w-full bg-brandNavy text-white font-bold py-3 rounded-lg hover:bg-brandBlue transition">Log In</button>
+      <p id="loginError" class="text-red-600 text-sm text-center hidden">Invalid email or password.</p>
+    </form>
+  </div>
+
+  <div id="dashboardView" class="hidden">
+    <h1 class="text-3xl font-extrabold text-brandNavy text-center mb-2">Welcome back<span id="clientName"></span></h1>
+    <button id="logoutBtn" class="block mx-auto text-sm text-brandGold underline mb-8">Log out</button>
+
+    <div class="bg-white p-6 rounded-xl shadow mb-4">
+      <h3 class="font-semibold text-brandNavy mb-2">Your Projects</h3>
+      <p id="projectsList" class="text-gray-500 text-sm">Loading...</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow mb-4">
+      <h3 class="font-semibold text-brandNavy mb-2">Your Reports</h3>
+      <p id="reportsList" class="text-gray-500 text-sm">Loading...</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h3 class="font-semibold text-brandNavy mb-2">Upload a Document</h3>
+      <input id="uploadFile" type="file" class="w-full border rounded-lg px-4 py-2 mb-3">
+      <button id="uploadBtn" class="w-full bg-brandGold text-brandNavy font-semibold py-2 rounded-lg">Upload</button>
+      <p id="uploadStatus" class="text-sm mt-2 text-gray-500"></p>
+    </div>
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+<script src="components.js"></script>
+<script>
+const API_BASE = window.location.origin; // same server that serves this page
+
+function saveToken(token, name) {
+  sessionStorage.setItem('tda_token', token);
+  sessionStorage.setItem('tda_name', name);
+}
+function getToken() { return sessionStorage.getItem('tda_token'); }
+function clearToken() { sessionStorage.removeItem('tda_token'); sessionStorage.removeItem('tda_name'); }
+
+async function showDashboard() {
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('dashboardView').classList.remove('hidden');
+  document.getElementById('clientName').textContent = ', ' + (sessionStorage.getItem('tda_name') || '');
+
+  const token = getToken();
+  const headers = { 'Authorization': 'Bearer ' + token };
+
+  try {
+    const projRes = await fetch(API_BASE + '/api/portal/projects', { headers });
+    const projData = await projRes.json();
+    document.getElementById('projectsList').textContent =
+      (projData.projects && projData.projects.length) ? projData.projects.join(', ') : 'No projects yet.';
+  } catch (e) {
+    document.getElementById('projectsList').textContent = 'Could not load projects.';
+  }
+
+  try {
+    const repRes = await fetch(API_BASE + '/api/portal/reports', { headers });
+    const repData = await repRes.json();
+    document.getElementById('reportsList').textContent =
+      (repData.reports && repData.reports.length) ? repData.reports.join(', ') : 'No reports yet.';
+  } catch (e) {
+    document.getElementById('reportsList').textContent = 'Could not load reports.';
+  }
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.classList.add('hidden');
+
+  try {
+    const res = await fetch(API_BASE + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      errorEl.textContent = data.error || 'Login failed.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    saveToken(data.token, data.name);
+    showDashboard();
+  } catch (err) {
+    errorEl.textContent = 'Could not reach the server. Is app.py running?';
+    errorEl.classList.remove('hidden');
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  clearToken();
+  document.getElementById('dashboardView').classList.add('hidden');
+  document.getElementById('loginView').classList.remove('hidden');
+});
+
+document.getElementById('uploadBtn').addEventListener('click', async () => {
+  const fileInput = document.getElementById('uploadFile');
+  const statusEl = document.getElementById('uploadStatus');
+  if (!fileInput.files.length) { statusEl.textContent = 'Choose a file first.'; return; }
+
+  const formData = new FormData();
+  formData.append('file', fileInput.files[0]);
+
+  try {
+    const res = await fetch(API_BASE + '/api/portal/upload', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + getToken() },
+      body: formData
+    });
+    const data = await res.json();
+    statusEl.textContent = res.ok ? data.message : (data.error || 'Upload failed.');
+  } catch (err) {
+    statusEl.textContent = 'Could not reach the server.';
+  }
+});
+
+// Stay logged in across page refresh within this browser session
+if (getToken()) { showDashboard(); }
+</script>
+</body>
+</html>
