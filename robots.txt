@@ -1,8 +1,8 @@
-%%writefile robots.txt
 User-agent: *
 Allow: /
+
 Disallow: /client_uploads/
 Disallow: /users.json
 Disallow: /portal.html
 
-Sitemap: https://terryden-website-2-4.onrender.com/sitemap.xml
+Sitemap: https://terryden-website-2-7.onrender.com/sitemap.xml
