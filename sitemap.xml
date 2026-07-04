@@ -1,7 +1,32 @@
-<loc>https://terryden-website-2-7.onrender.com/</loc>
-<loc>https://terryden-website-2-7.onrender.com/about.html</loc>
-<loc>https://terryden-website-2-7.onrender.com/services.html</loc>
-<loc>https://terryden-website-2-7.onrender.com/industries.html</loc>
-<loc>https://terryden-website-2-7.onrender.com/contact.html</loc>
-<loc>https://terryden-website-2-7.onrender.com/careers.html</loc>
-<loc>https://terryden-website-2-7.onrender.com/tenders.html</loc>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/about.html</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/services.html</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/industries.html</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/contact.html</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/careers.html</loc>
+  </url>
+
+  <url>
+    <loc>https://terryden-website-2-7.onrender.com/tenders.html</loc>
+  </url>
+
+</urlset>
