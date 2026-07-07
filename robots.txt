@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /client_uploads/
-Disallow: /users.json
-Disallow: /portal.html
-
 Sitemap: https://terryden-website-2-7.onrender.com/sitemap.xml
